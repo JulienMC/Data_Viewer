@@ -33,25 +33,11 @@ class FileData(list):
     def __init__(self,xs,ys,zs):
         [self.append(ls) for ls in [xs,ys,zs]]
         
-#def file_extract(filename, to_extract, headers):
-#    ''' String [String String String] Dict{*String:Number}-> List List List
-#        Extract the data from a file by verifying the value for each column
-#        header. Outputs 3 lists which contain the data corresponding to to_extract
-#        if the header value corresponds
-#        return [5,7,5,7],[0,0,1,1],[10,20,30,40]
-#    '''
-#    with open(filename, "r") as myfile:
-#       data = csv.reader(myfile, delimiter=',')  #makes a generator from data
-#       for row in data:
-#           index_to_header = {n:header for n,header in enumerate(row)}
-#           header_to_index = {header:n for n,header in enumerate(row)}
-#           break
-#       #next(data) #skips first line
-#       xdat,ydat,zdat = [],[],[]
-#       for row in data:
-#           if False not in [True if index_to_header[col] not in headers.keys() or float(headers[index_to_header[col]]) == float(val)  else False for col,val in enumerate(row)]:
-#               [ls.append(float(row[header_to_index[to_extract[n]]])) if row[header_to_index[to_extract[n]]] != '' else ls.append(np.nan) for n,ls in enumerate([xdat,ydat,zdat])]
-#    return FileData(xdat,ydat,zdat)
+def x_array(xinputs,yinputs):
+    return np.array([sorted(set(xinputs)) for n in range(len(set(yinputs)))])
+
+def y_array(yinputs,xinputs):
+    return np.array([[n]*len(set(xinputs)) for n in sorted(set(yinputs))])
     
 def file_extract(filename, to_extract, headers):
     ''' String [String String String] Dict{*String:Number}-> List List List
@@ -79,8 +65,8 @@ def file_extract(filename, to_extract, headers):
                     else:
                         ls.append(np.nan)
 
-       xarray = np.array([sorted(set(xdat), key=int) for n in range(len(set(ydat)))])
-       yarray = np.array([[n]*len(set(xdat)) for n in sorted(set(ydat), key=int)])
+       xarray = x_array(xdat,ydat)# np.array([sorted(set(xdat)) for n in range(len(set(ydat)))])
+       yarray = y_array(ydat,xdat)# np.array([[n]*len(set(xdat)) for n in sorted(set(ydat))])
        
        newx = [item for sublist in xarray.tolist() for item in sublist]
        newy = [item for sublist in yarray.tolist() for item in sublist]

@@ -120,10 +120,14 @@ class Data(list):
     '''
     def __init__(self,inputs, extrapolation = False, new_type = False):
         x_input_list,y_input_list,z_input_list = inputs
-        self.append(np.array([sorted(set(x_input_list)) for n in range(len(set(y_input_list)))]))
-        self.append(np.array([[n]*len(set(x_input_list)) for n in sorted(set(y_input_list))]))
-        self.append(np.array([c for c in fn.chunks(z_input_list,len(set(x_input_list)))]))
+        print 'x',x_input_list
+        print 'y',y_input_list
+        print 'z',z_input_list        
         
+        self.append(fn.x_array(x_input_list,y_input_list))# np.array([sorted(set(x_input_list)) for n in range(len(set(y_input_list)))]))
+        self.append(fn.y_array(y_input_list,x_input_list) )# np.array([[n]*len(set(x_input_list)) for n in sorted(set(y_input_list))]))
+        self.append(np.array([c for c in fn.chunks(z_input_list,len(set(x_input_list)))]))
+      
         if extrapolation: fn.extrapolate_array(self[2])
         
         # increase number of contours. not working yet

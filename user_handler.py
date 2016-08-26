@@ -300,7 +300,10 @@ class DropDownChoice():
                     list_of_checked = [entry for entry in self.master.master.master.userinputmanager.entry_list[:-2] if (entry.cb is not None and entry.cb.val.get() == 1 and entry is not self)]
                     selected = len(list_of_checked)
                     if selected == 1 and 'selected' not in self.choice.get():
-                        self.choice.set('selected as y')                    
+                        if list_of_checked[0].choice.get() == 'selected as x':
+                            self.choice.set('selected as y')
+                        else:
+                            self.choice.set('selected as x')
                     elif selected == 0   and 'selected' not in self.choice.get():
                         self.choice.set('selected as x')
                     elif 'selected' not in self.choice.get():
